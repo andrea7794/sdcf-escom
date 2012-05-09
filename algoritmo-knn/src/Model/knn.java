@@ -1,21 +1,38 @@
 package Model;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.StringTokenizer;
+
+import javax.swing.JOptionPane;
 
 public class knn {
 
-	public caract_knn vo;
+	public caract_knn vo; 
 	int k=0;
+	int numMuestras=0;
+	List<caract_knn> valores_pre = new ArrayList<caract_knn>();
 	
 	public knn(int k){
 		this.k=k;
 	}
 	
+	
+	public knn(String muestras, String valor,int k){
+		this.k=k;
+	
+	}
+	
+	
 	public String iniciar(){
-		setVo();
 		
+		setVo();
+		/*
 		List<caract_knn> valores_pre = new ArrayList<caract_knn>();
 		
 		caract_knn c1 = new caract_knn();
@@ -84,6 +101,34 @@ public class knn {
 		}else{
 			return "Clase 2";
 		}
+		*/
+		
+		
+		for (int i=0;i<numMuestras;i++){
+			calcular_distancias(vo, valores_pre.get(i));
+			
+		}
+		Collections.sort(valores_pre);
+		
+		int val1=0;
+		int val2=0;
+		for(int j=0;j<k;j++){
+			//valores_pre.get(j).imprimir();
+			caract_knn prue = valores_pre.get(j);
+			if(prue.clase.equals("Clase 1")){
+				val1++;
+			}else if (prue.clase.equals("Clase 2")){
+				val2++;
+			}
+		}
+		
+		
+		if (val1>val2){
+			return "Clase 1";
+		}else{
+			return "Clase 2";
+		}
+		
 		
 	}
 	
@@ -104,9 +149,110 @@ public class knn {
 
 	public void setVo(){
 		vo = new caract_knn();
-		vo.setAtributo(110);
-		vo.setAtributo(15);
+		vo.setAtributo(160);
+		vo.setAtributo(40);
 	}
 	
 
+	public void cargarMuestras(){
+		String path = null;
+		BufferedReader buffS= null;
+		StringTokenizer tok;
+		caract_knn c1 = null;
+		
+		
+		int i=0;
+		int j=0;
+		
+		try {
+			path = new File("").getCanonicalPath();
+			buffS = new BufferedReader(new FileReader(new File(path,"test")));
+			String tex;
+			
+			while((tex=buffS.readLine())!=null){
+				
+				tok = new StringTokenizer(tex, ",");
+				c1 = new caract_knn();
+				i=0;
+				
+				while (tok.hasMoreTokens()){
+					
+					if(i==0){
+						c1.setClase(tok.nextToken());						
+					}else{
+						//System.out.println(tok.nextToken());
+						c1.setAtributo(Double.parseDouble(tok.nextToken()));
+					}
+					
+										
+				i++;
+				}
+				
+				valores_pre.add(c1);
+				j++;
+				c1 = null;
+			}
+				
+			}
+	    catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	this.numMuestras = j;	
+	}
+	
+	
+	
+	public void GUIingresar(){
+		
+		int i =0;
+		String tex = new String();
+		StringTokenizer tok;
+		caract_knn c1;
+		
+		while(tex.equals("@")!=true){
+		tex = JOptionPane.showInputDialog(null,"Muestras:","Introduce Cantidad",JOptionPane.QUESTION_MESSAGE);		
+		
+		tok = new StringTokenizer(tex, ",");
+		c1 = new caract_knn();
+		i=0;
+		
+		if (tex.equals("@")!=true){
+		while (tok.hasMoreTokens()){
+			
+			if(i==0){
+				c1.setClase(tok.nextToken());						
+			}else{
+				System.out.println(tok.nextToken());
+				//c1.setAtributo(Double.parseDouble(tok.nextToken()));
+			}
+			
+								
+		i++;
+		}
+		
+		}
+		
+		
+		
+		}
+		
+		if (tex.equals("@")){
+			tex = JOptionPane.showInputDialog(null,"Objeto a predecir:","Introduce Cantidad",JOptionPane.QUESTION_MESSAGE);		
+			tok = new StringTokenizer(tex, ",");
+			c1 = new caract_knn();
+			i=0;
+			vo = new caract_knn();
+			
+			while (tok.hasMoreTokens()){
+				
+					vo.setAtributo(Double.parseDouble(tok.nextToken()));						
+			
+			}
+		}
+		
+		
+	}
+	
+	
 }

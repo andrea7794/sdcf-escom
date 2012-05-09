@@ -8,7 +8,7 @@ public class caract_knn implements Comparable{
 	List<Double> caracteristicas;
 	String clase;
 	int num;
-	String distancia;	//Se dejo esta valiable como String ya que es mejor ordenarla de esa forma
+	String distancia;	//Se dejo esta variable como String ya que es mejor ordenarla de esa forma
 	
 
 	public caract_knn(){
