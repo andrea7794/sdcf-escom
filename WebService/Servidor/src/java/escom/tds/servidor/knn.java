@@ -1,5 +1,4 @@
 package escom.tds.servidor;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -36,24 +35,30 @@ public class knn {
 		Collections.sort(valores_pre);	//Se ordena en base en la distancia calculada
 		
 		int val1=0;	
-		int val2=0;
+		//int val2=0;
+	
 		for(int j=0;j<k;j++){
 			//valores_pre.get(j).imprimir();
 			caract_knn prue = valores_pre.get(j);
 			if(prue.clase.equals("1")){
 				val1++;
-			}else if (prue.clase.equals("0")){
-				val2++;
 			}
+			
+			//else if (prue.clase.equals("0")){
+				//val2++;
+			//}
 		}
-		
+		//System.out.print(val1);
 		//Comparamos que muestra se le acerco mucho
-		if (val1>val2){
-			return "Banco en Operaci�n";
-		}else{
-			return "Banco en Banca Rota";
+		if (val1==3){
+			return "Banco en Operación";
+		}else if (val1==2){
+			return "Banco en Operación regular ";
+		}else if(val1== 1){
+			return "Banco en riesgo";
+		}else {
+			return"banco en banca rota";
 		}
-		
 		
 	}
 	
