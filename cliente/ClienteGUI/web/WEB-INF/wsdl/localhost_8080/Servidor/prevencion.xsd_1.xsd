@@ -1,12 +1,68 @@
-<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is Metro/2.1.1-b09 (branches/2.1-6834; 2011-07-16T17:14:48+0000) JAXWS-RI/2.2.5-promoted-b04 JAXWS/2.2. --><xs:schema xmlns:tns="http://servidor.tds.escom/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://servidor.tds.escom/">
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is Metro/2.2-b13 (branches/2.2-6964; 2012-01-09T18:04:18+0000) JAXWS-RI/2.2.6-promoted-b20 JAXWS/2.2 svn-revision#unknown. --><xs:schema xmlns:tns="http://servidor.tds.escom/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://servidor.tds.escom/">
+
+<xs:element name="consulta1Ano" type="tns:consulta1Ano"/>
+
+<xs:element name="consulta1AnoResponse" type="tns:consulta1AnoResponse"/>
+
+<xs:element name="consulta1Mes" type="tns:consulta1Mes"/>
+
+<xs:element name="consulta1MesResponse" type="tns:consulta1MesResponse"/>
+
+<xs:element name="consulta3Meses" type="tns:consulta3Meses"/>
+
+<xs:element name="consulta3MesesResponse" type="tns:consulta3MesesResponse"/>
 
 <xs:element name="consultaBase" type="tns:consultaBase"/>
 
 <xs:element name="consultaBaseResponse" type="tns:consultaBaseResponse"/>
 
+<xs:element name="consultaProcesa" type="tns:consultaProcesa"/>
+
+<xs:element name="consultaProcesaResponse" type="tns:consultaProcesaResponse"/>
+
 <xs:element name="procesaInformacion" type="tns:procesaInformacion"/>
 
 <xs:element name="procesaInformacionResponse" type="tns:procesaInformacionResponse"/>
+
+<xs:element name="verificaUsr" type="tns:verificaUsr"/>
+
+<xs:element name="verificaUsrResponse" type="tns:verificaUsrResponse"/>
+
+<xs:complexType name="consultaProcesa">
+<xs:sequence>
+<xs:element name="dep" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="consultaProcesaResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="consulta1Mes">
+<xs:sequence>
+<xs:element name="dep" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="consulta1MesResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="consulta1Ano">
+<xs:sequence>
+<xs:element name="dep" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="consulta1AnoResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
 
 <xs:complexType name="consultaBase">
 <xs:sequence>
@@ -20,9 +76,35 @@
 </xs:sequence>
 </xs:complexType>
 
+<xs:complexType name="verificaUsr">
+<xs:sequence>
+<xs:element name="usr" type="xs:string" minOccurs="0"/>
+<xs:element name="pass" type="xs:string" minOccurs="0"/>
+<xs:element name="dep" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="verificaUsrResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="consulta3Meses">
+<xs:sequence>
+<xs:element name="dep" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="consulta3MesesResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
 <xs:complexType name="procesaInformacion">
 <xs:sequence>
-<xs:element name="sqlString" type="xs:string" minOccurs="0"/>
+<xs:element name="dep" type="xs:string" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 

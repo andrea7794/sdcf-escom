@@ -64,11 +64,13 @@
                     <td rowspan="3" align="center" valign="top"><p>      
                             <h3>&nbsp;</h3>
                             <h2><strong> </strong><img src="../images/m_fondos.png" width="388" height="213" /></h2></td>
+
                     <td rowspan="3" align="center" valign="top">
-                        <h3>INICIAR SESION </h3>
-                        <h3>&nbsp;</h3>
-                        <p>Usuario:</p>
                         <form id="form1" name="form1" method="post" action="../Verifica">
+                            <h3>INICIAR SESION </h3>
+                            <h3>&nbsp;</h3>
+                            <input type="checkbox" name="dep" value="1" checked="checked" disabled="disabled" /> Manejo de Fondos
+                            <p>Usuario:</p>
                             <label for="user"></label>
                             <input name="usr" type="text" id="usr" size="30" />
 
@@ -81,14 +83,12 @@
                             <input type="submit" value="ingresar" name="ingresar" />
                         </form>
 
-
-                        <p><a href="opciones_mf.jsp">I</a>I<a href="opciones_mf.jsp">N</a>N<a href="opciones_mf.jsp">G</a>G<a href="opciones_mf.jsp">R</a>R<a href="opciones_mf.jsp">E</a>E<a href="opciones_mf.jsp">S</a>S<a href="opciones_mf.jsp">A</a>A<a href="opciones.jsp">R</a>R</p></td>
-                    <td rowspan="2" align="right"><h5><strong><a href="carta.jsp">&lt;--</a>¿QUE ES UNA CARTA DE CREDITO?</strong></h5>
-                        <h5><strong><a href="c_credito.jsp">&lt;--</a>CARTA DE CREDITO DE IMPORTACIÓN</strong><br>
-                        </h5>      
-                        <h5><strong><a href="c_domestica.jsp">&lt;--</a>CARTAS DE CREDITO DOMESTICAS</strong></h5>
-                        <h5><strong><a href="c_exportacion.jsp">&lt;--</a>CARTAS DE CREDITO DE EXPORTACIÓN</strong></h5>
-                        <h5><strong><a href="c_standby.jsp">&lt;--</a>CARTAS DE CREDITO EN STANDBY</strong></h5></td>
+                        <td rowspan="2" align="right"><h5><strong><a href="carta.jsp">&lt;--</a>¿QUE ES UNA CARTA DE CREDITO?</strong></h5>
+                            <h5><strong><a href="c_credito.jsp">&lt;--</a>CARTA DE CREDITO DE IMPORTACIÓN</strong><br>
+                            </h5>      
+                            <h5><strong><a href="c_domestica.jsp">&lt;--</a>CARTAS DE CREDITO DOMESTICAS</strong></h5>
+                            <h5><strong><a href="c_exportacion.jsp">&lt;--</a>CARTAS DE CREDITO DE EXPORTACIÓN</strong></h5>
+                            <h5><strong><a href="c_standby.jsp">&lt;--</a>CARTAS DE CREDITO EN STANDBY</strong></h5></td>
                 </tr>
                 <tr>
                     <td colspan="2" rowspan="2" align="left"><h6>&nbsp;</h6>        <h6>&nbsp;</h6>        <h6>&nbsp;</h6>        <h6>&nbsp;</h6>        <h6>&nbsp;</h6>          <a href="qys.jsp"><img src="../images/qys.png" width="265" height="143" /></a></td>

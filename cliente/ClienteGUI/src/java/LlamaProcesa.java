@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-import Webservice.*;
+import escom.tds.servidor.Prevencion_Service;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -103,12 +103,12 @@ public class LlamaProcesa extends HttpServlet {
     }// </editor-fold>
 
     private String consultaBase(java.lang.String sqlString) {
-        Webservice.Prevencion port = service.getPrevencionPort();
+        escom.tds.servidor.Prevencion port = service.getPrevencionPort();
         return port.consultaBase(sqlString);
     }
 
     private String procesaInformacion(java.lang.String sqlString) {
-        Webservice.Prevencion port = service.getPrevencionPort();
+        escom.tds.servidor.Prevencion port = service.getPrevencionPort();
         return port.procesaInformacion(sqlString);
     }
 }
