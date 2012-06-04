@@ -4,10 +4,15 @@
  */
 package escom.tds.servidor;
 
-import java.sql.*;
-import javax.jws.WebService;
+import escom.tds.algoritmo.knn;
+import escom.tds.dao.DAO;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
+import javax.jws.WebService;
 
 /**
  *
@@ -16,42 +21,70 @@ import javax.jws.WebParam;
 @WebService(serviceName = "prevencion")
 public class prevencion {
 
-     public String bd = "sdcf_database";
-    public String login = "root";
-    public String password = "admin";
+    public DAO dao = new DAO();
     public ResultSet rs = null;
-    public Statement stm;
-    public String url = "jdbc:mysql://localhost:3306/" + bd;
-    public Connection conn = null;
-    
+
     /**
      * Web service operation
      */
     @WebMethod(operationName = "consultaBase")
     public String consultaBase(@WebParam(name = "sqlString") String sqlString) {
-        //TODO write your implementation code here:
-        int i = 0;
-        int j = 0;
-        String a = "";
-        StringBuilder s1 = new StringBuilder();
-
-
         try {
+            //TODO write your implementation code here:
 
-            Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection(url, login, password);
-            stm = conn.createStatement();
-            if (conn != null) {
-                System.out.println("Conexión a base de datos " + url + " ... Ok");
+
+            String a;
+            StringBuilder s1 = new StringBuilder();
+
+            rs = dao.queryDB(sqlString);
+
+            while (rs.next()) {
+                s1.append(rs.getString(1)).append(",");
+                s1.append("-,");
             }
 
+            a = s1.toString();
+            a = a.substring(0, (a.length() - 1));
 
-            String query2 = "SELECT flag, ingresos,egresos"
-                    + " FROM estado_resultados AS E, bancos AS B, departamentos AS D"
-                    + " WHERE E.id_dep='2' AND E.año='2011' AND mes = '2' AND B.id_banco = E.id_banco AND D.id_depto = E.id_dep"
-                    + " ORDER BY E.id_banco;";
+            return a;
+        } catch (SQLException ex) {
+            Logger.getLogger(prevencion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
 
-            rs = stm.executeQuery(query2);
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "procesaInformacion")
+    public String procesaInformacion(@WebParam(name = "dep") final String dep) {
+        //TODO write your implementation code here:
+        //String muestras = "1,100,20,-,1,108,15,-,1,121,25,-,0,148,35,-,0,140,42,-,0,155,30,-";
+
+        String queriedString = consultaProcesa(dep);
+        String valor = "1329504,3766187	,0.566197,0.0142387";
+        knn ini = new knn(queriedString, valor, 3);
+        String a = ini.iniciar();
+
+        return a;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "consultaProcesa")
+    public String consultaProcesa(@WebParam(name = "dep") final String dep) {
+        try {
+            //TODO write your implementation code here:
+
+            String a;
+            StringBuilder s1 = new StringBuilder();
+
+            rs = dao.queryDB("SELECT flag, ingresos,egresos, liquidez, solvencia"
+                    + " FROM estado_resultados AS E"
+                    + " WHERE E.id_dep='" + dep + "'" + "AND E.id_banco <> '1'"
+                    + " ORDER BY E.id_edo;");
 
             while (rs.next()) {
 
@@ -62,36 +95,197 @@ public class prevencion {
 
                 s1.append(rs.getString("egresos")).append(",");
 
+                s1.append(rs.getString("liquidez")).append(",");
+
+                s1.append(rs.getString("solvencia")).append(",");
+
                 s1.append("-,");
 
 
             }
-
+            rs.close();
             a = s1.toString();
             a = a.substring(0, (a.length() - 1));
 
+            return a;
         } catch (SQLException ex) {
-            System.out.println("Problema al consultar la base de datos" + url);
-        } catch (ClassNotFoundException ex) {
-            System.out.println(ex);
+            Logger.getLogger(prevencion.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        return a;
-
-
+        return null;
     }
 
     /**
      * Web service operation
      */
-    @WebMethod(operationName = "procesaInformacion")
-    public String procesaInformacion(@WebParam(name = "sqlString") String sqlString) {
+    @WebMethod(operationName = "consulta1Mes")
+    public String consulta1Mes(@WebParam(name = "dep") final String dep) {
         //TODO write your implementation code here:
-        //String muestras = "1,100,20,-,1,108,15,-,1,121,25,-,0,148,35,-,0,140,42,-,0,155,30,-";
-        String valor = "100,20";
-        knn ini = new knn(sqlString, valor, 1);
-        String a = ini.iniciar();
+        try {
+            //TODO write your implementation code here:
 
-        return a;
+            String a;
+            StringBuilder s1 = new StringBuilder();
+
+            rs = dao.queryDB("SELECT * FROM estado_resultados AS E "
+                    + "WHERE E.id_dep = '" + dep + "' AND E.id_banco = '1' AND mes IN "
+                    + "( SELECT MAX(mes) -1 FROM estado_resultados AS E) AND aÃ±o IN "
+                    + "( SELECT MAX(aÃ±o) FROM estado_resultados AS E) ORDER BY E.id_edo");
+
+            while (rs.next()) {
+
+                s1.append(rs.getString("ingresos")).append(",");
+
+                s1.append(rs.getString("egresos")).append(",");
+
+                s1.append(rs.getString("liquidez")).append(",");
+
+                s1.append(rs.getString("solvencia")).append(",");
+
+                s1.append(rs.getString("aÃ±o")).append(",");
+
+                s1.append(rs.getString("mes")).append(",");
+
+                s1.append(rs.getString("flag")).append(",");
+
+                s1.append("-,");
+
+
+            }
+            rs.close();
+            a = s1.toString();
+            a = a.substring(0, (a.length() - 1));
+
+            return a;
+        } catch (SQLException ex) {
+            Logger.getLogger(prevencion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "consulta3Meses")
+    public String consulta3Meses(@WebParam(name = "dep") final String dep) {
+        //TODO write your implementation code here:
+        try {
+            //TODO write your implementation code here:
+
+            String a;
+            StringBuilder s1 = new StringBuilder();
+
+            rs = dao.queryDB("SELECT * FROM estado_resultados AS E "
+                    + "WHERE E.id_dep = '" + dep + "' AND E.id_banco = '1' AND mes IN "
+                    + "( SELECT MAX(mes) -3 FROM estado_resultados AS E) AND aÃ±o IN "
+                    + "( SELECT MAX(aÃ±o) FROM estado_resultados AS E) ORDER BY E.id_edo");
+
+            while (rs.next()) {
+
+                s1.append(rs.getString("ingresos")).append(",");
+
+                s1.append(rs.getString("egresos")).append(",");
+
+                s1.append(rs.getString("liquidez")).append(",");
+
+                s1.append(rs.getString("solvencia")).append(",");
+
+                s1.append(rs.getString("aÃ±o")).append(",");
+
+                s1.append(rs.getString("mes")).append(",");
+
+                s1.append(rs.getString("flag")).append(",");
+
+                s1.append("-,");
+
+
+            }
+            rs.close();
+            a = s1.toString();
+            a = a.substring(0, (a.length() - 1));
+
+            return a;
+        } catch (SQLException ex) {
+            Logger.getLogger(prevencion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "consulta1Ano")
+    public String consulta1Ano(@WebParam(name = "dep") final String dep) {
+        //TODO write your implementation code here:
+        try {
+            //TODO write your implementation code here:
+
+            String a;
+            StringBuilder s1 = new StringBuilder();
+
+            rs = dao.queryDB("SELECT * FROM estado_resultados AS E "
+                    + "WHERE E.id_dep = '" + dep + "' AND E.id_banco = '1' AND aÃ±o IN "
+                    + "( SELECT MAX(aÃ±o) -1 FROM estado_resultados AS E ORDER BY E.id_edo)");
+
+            while (rs.next()) {
+
+                s1.append(rs.getString("ingresos")).append(",");
+
+                s1.append(rs.getString("egresos")).append(",");
+
+                s1.append(rs.getString("liquidez")).append(",");
+
+                s1.append(rs.getString("solvencia")).append(",");
+
+                s1.append(rs.getString("aÃ±o")).append(",");
+
+                s1.append(rs.getString("mes")).append(",");
+
+                s1.append(rs.getString("flag")).append(",");
+
+                s1.append("-,");
+
+
+            }
+            rs.close();
+            a = s1.toString();
+            a = a.substring(0, (a.length() - 1));
+
+            return a;
+        } catch (SQLException ex) {
+            Logger.getLogger(prevencion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "verificaUsr")
+    public String verificaUsr(@WebParam(name = "usr") final String usr, @WebParam(name = "pass") final String pass,
+            @WebParam(name = "dep") final String dep) {
+        String id;
+        ResultSet rs2;
+        try {
+            //TODO write your implementation code here:
+            rs = dao.queryDB("SELECT id_usuario FROM banco.usuarios "
+                    + "WHERE nombre_user = '" + usr + "' AND contrasena = '" + pass + "'");
+
+            if (rs.next()) {
+                id = rs.getString("id_usuario");
+                rs2 = dao.queryDB("SELECT * FROM banco.usuario_depto "
+                        + "WHERE  id_user='" + id + "' AND id_depto ='" + dep + "'");
+                if (rs2.next()) {
+                    return "1";
+                } else {
+                    return "Ud. no pertenece al deppartamento " + dep;
+                }
+
+            } else {
+                return "Usuario y/o Contrasena Incorrecta";
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(prevencion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "0";
     }
 }

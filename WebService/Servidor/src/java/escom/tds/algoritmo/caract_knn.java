@@ -1,4 +1,4 @@
-package escom.tds.servidor;
+package escom.tds.algoritmo;
 
 import java.util.ArrayList;
 import java.util.List;
