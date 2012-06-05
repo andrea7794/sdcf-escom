@@ -54,6 +54,9 @@ public class prevencion {
 
     }
 
+    
+    
+    
     /**
      * Web service operation
      */
@@ -63,13 +66,53 @@ public class prevencion {
         //String muestras = "1,100,20,-,1,108,15,-,1,121,25,-,0,148,35,-,0,140,42,-,0,155,30,-";
 
         String queriedString = consultaProcesa(dep);
+        String queriedBank = consultaBanco(dep);
         String valor = "1329504,3766187	,0.566197,0.0142387";
-        knn ini = new knn(queriedString, valor, 3);
+        knn ini = new knn(queriedString, queriedBank, 3);
         String a = ini.iniciar();
 
         return a;
     }
 
+    
+    @WebMethod(operationName = "consultaBanco")
+    public String consultaBanco(@WebParam(name = "dep") final String dep) {
+        try {
+            //TODO write your implementation code here:
+
+            String a;
+            StringBuilder s1 = new StringBuilder();
+            //mes MAyo
+            rs = dao.queryDB("SELECT ingresos,egresos, liquidez, solvencia FROM "
+                    + "estado_resultados AS E WHERE E.id_dep='"+dep+"'" 
+                    + "AND E.id_banco = '1' AND E.mes = '5' ORDER BY E.id_edo;");
+
+            while (rs.next()) {
+
+
+                s1.append(rs.getString("ingresos")).append(",");
+
+                s1.append(rs.getString("egresos")).append(",");
+
+                s1.append(rs.getString("liquidez")).append(",");
+
+                s1.append(rs.getString("solvencia"));
+              
+
+            }
+            rs.close();
+            a = s1.toString();
+            a = a.substring(0, (a.length() - 1));
+
+            return a;
+        } catch (SQLException ex) {
+            Logger.getLogger(prevencion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    
+    
     /**
      * Web service operation
      */
@@ -80,10 +123,10 @@ public class prevencion {
 
             String a;
             StringBuilder s1 = new StringBuilder();
-
+            //mes MAyo
             rs = dao.queryDB("SELECT flag, ingresos,egresos, liquidez, solvencia"
                     + " FROM estado_resultados AS E"
-                    + " WHERE E.id_dep='" + dep + "'" + "AND E.id_banco <> '1'"
+                    + " WHERE E.id_dep='" + dep + "'" + "AND E.id_banco <> '1' AND E.mes = '5'"
                     + " ORDER BY E.id_edo;");
 
             while (rs.next()) {
@@ -126,10 +169,8 @@ public class prevencion {
             String a;
             StringBuilder s1 = new StringBuilder();
 
-            rs = dao.queryDB("SELECT * FROM estado_resultados AS E "
-                    + "WHERE E.id_dep = '" + dep + "' AND E.id_banco = '1' AND mes IN "
-                    + "( SELECT MAX(mes) -1 FROM estado_resultados AS E) AND aÃ±o IN "
-                    + "( SELECT MAX(aÃ±o) FROM estado_resultados AS E) ORDER BY E.id_edo");
+            rs = dao.queryDB("SELECT * FROM estado_resultados WHERE id_banco='1' AND id_dep='"+dep+"' "
+                    + "ORDER BY id_edo DESC LIMIT 1;");
 
             while (rs.next()) {
 
@@ -141,14 +182,11 @@ public class prevencion {
 
                 s1.append(rs.getString("solvencia")).append(",");
 
-                s1.append(rs.getString("aÃ±o")).append(",");
+                s1.append(rs.getString("año")).append(",");
 
                 s1.append(rs.getString("mes")).append(",");
 
                 s1.append(rs.getString("flag")).append(",");
-
-                s1.append("-,");
-
 
             }
             rs.close();
@@ -172,12 +210,13 @@ public class prevencion {
             //TODO write your implementation code here:
 
             String a;
+            int i=0;
             StringBuilder s1 = new StringBuilder();
 
-            rs = dao.queryDB("SELECT * FROM estado_resultados AS E "
-                    + "WHERE E.id_dep = '" + dep + "' AND E.id_banco = '1' AND mes IN "
-                    + "( SELECT MAX(mes) -3 FROM estado_resultados AS E) AND aÃ±o IN "
-                    + "( SELECT MAX(aÃ±o) FROM estado_resultados AS E) ORDER BY E.id_edo");
+
+
+            rs = dao.queryDB("SELECT * FROM estado_resultados WHERE id_banco='1' AND id_dep='"+dep+"' "
+                    + "ORDER BY id_edo DESC LIMIT 3;");
 
             while (rs.next()) {
 
@@ -189,16 +228,16 @@ public class prevencion {
 
                 s1.append(rs.getString("solvencia")).append(",");
 
-                s1.append(rs.getString("aÃ±o")).append(",");
+                s1.append(rs.getString("año")).append(",");
 
                 s1.append(rs.getString("mes")).append(",");
 
                 s1.append(rs.getString("flag")).append(",");
+         
 
-                s1.append("-,");
 
-
-            }
+               }
+            
             rs.close();
             a = s1.toString();
             a = a.substring(0, (a.length() - 1));
@@ -221,10 +260,10 @@ public class prevencion {
 
             String a;
             StringBuilder s1 = new StringBuilder();
-
-            rs = dao.queryDB("SELECT * FROM estado_resultados AS E "
-                    + "WHERE E.id_dep = '" + dep + "' AND E.id_banco = '1' AND aÃ±o IN "
-                    + "( SELECT MAX(aÃ±o) -1 FROM estado_resultados AS E ORDER BY E.id_edo)");
+            
+                
+            rs = dao.queryDB("SELECT * FROM estado_resultados WHERE id_banco='1' AND id_dep='"+dep+"' "
+                    + " ORDER BY id_edo DESC LIMIT 12;");
 
             while (rs.next()) {
 
@@ -236,16 +275,17 @@ public class prevencion {
 
                 s1.append(rs.getString("solvencia")).append(",");
 
-                s1.append(rs.getString("aÃ±o")).append(",");
+                s1.append(rs.getString("año")).append(",");
 
                 s1.append(rs.getString("mes")).append(",");
 
                 s1.append(rs.getString("flag")).append(",");
 
-                s1.append("-,");
+               
 
 
             }
+            
             rs.close();
             a = s1.toString();
             a = a.substring(0, (a.length() - 1));
@@ -277,7 +317,7 @@ public class prevencion {
                 if (rs2.next()) {
                     return "1";
                 } else {
-                    return "Ud. no pertenece al deppartamento " + dep;
+                    return "Ud. no pertenece al departamento ";
                 }
 
             } else {

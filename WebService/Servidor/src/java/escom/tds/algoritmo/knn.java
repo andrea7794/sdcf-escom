@@ -52,9 +52,9 @@ public class knn {
 		//System.out.print(val1);
 		//Comparamos que muestra se le acerco mucho
 		if (val1==3){
-			return "Banco en Operaci�n";
+			return "Banco en Operación";
 		}else if (val1==2){
-			return "Banco en Operaci�n regular ";
+			return "Banco en Operación regular ";
 		}else if(val1== 1){
 			return "Banco en riesgo";
 		}else {
