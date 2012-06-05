@@ -6,6 +6,8 @@
 import escom.tds.servidor.Prevencion_Service;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.StringTokenizer;
+import javax.jms.Session;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -39,12 +41,60 @@ public class Consulta extends HttpServlet {
             String mes_1 = request.getParameter("1mes");
             String mes_3 = request.getParameter("3meses");
             String mes_12 = request.getParameter("12meses");
+            String depto = request.getParameter("dep");
+            
+             String name_depto = null;
+                  switch(Integer.parseInt(depto)) 
+                     {
+                   case 1:name_depto = "Manejo de Fondos";
+                           break;
+                   case 2:name_depto = "Monetaria";
+                           break;
+                   case 3:name_depto = "Politica";
+                           break;
+                   case 4:name_depto = "Sistemas Finacieros";
+                           break; 
+                }
+            
             
             if (mes_1!=null || mes_3!=null || mes_12!=null){
                 
+                String dep = request.getParameter("depto");
+               
+                
+                
+                
                if (mes_1!=null && mes_3==null && mes_12==null){
                    
-                   String consult = consulta1Mes("1");
+                   
+                   
+                   String ee = new String();
+                   if(depto!=null){
+                       ee ="HOla";
+                   }else{
+                       ee = "Adios";
+                   }
+                   
+                   
+                   String consult = consulta1Mes(dep);
+                   StringTokenizer ed = new StringTokenizer(consult,",");
+                   String con[] = new String[7];
+                   String status = new String();                
+                   while (ed.hasMoreTokens()){
+                       
+                       for (int i=0;i<7;i++){
+                           con[i] = ed.nextToken();
+                       }
+                       
+                   }
+                   
+                   for(int i=0;i<3;i++){
+                   if(con[6].equals("1")){
+                       status = "Banco en Operación";
+                   }else{
+                       status = "Banco en Bancarrota";
+                   }
+                   }
                    
                    out.println("<!DOCTYPE html><html xmlns=\"http://www.w3.org/1999/xhtml/\"><head><meta http-equiv=\"Content-Type content=\"text html; charset=utf-8\"/>"
            + "<title>Banco Multinacional</title><style type=\"text/css\">body,td,th {color: #90F;}</style><style type=\"text/css\">"
@@ -55,7 +105,11 @@ public class Consulta extends HttpServlet {
            + "<td colspan=\"3\"><p>&nbsp;</p><p><a href=\"compromisocial.jsp\"><img src=\"/Cliente/images/compromiso_social.png\" width=\"346\" height=\"149\" align=\"right\" /></a></p></td></tr><tr>"
            + "<td height=\"84\" colspan=\"6\"><h6><img src=\"/Cliente/images/eco_fin.png\" width=\"1316\" height=\"126\" /></h6></td></tr><tr><td colspan=\"2\"><h5>&nbsp;</h5><h5>COBRANZA DOCUMENTARIA<a href=\"cobranza.jsp\">--&gt; </a></h5><h5>GIROS DIRECTOS FINANCIADOS<a href=\"giros.jsp\">--&gt;</a> </h5>"
            + "<h5>FINANCIAMIENTO A CORTO PLAZO<a href=\"f_cp.jsp\">--&gt;</a></h5>        <h5>SUCURSALES EXTRANJERAS<a href=\"cons_banc.jsp\">--&gt;</a></h5></td><td>"
-           + "<center><h3>Consulta de 1 mes </h3></center>"
+           + "<center><h2>Departamento: "+name_depto+"</h2></center> "
+           + "<center><h2>Consulta de 1 mes </h2></center> "      
+           + "<table border=\"1\" width =\"600\"><thead><tr><th>Ingresos</th><th>Egresos</th><th>Liquidez</th><th>Solvencia</th><th>Año</th><th>Mes</th><th>Status</th>"
+           + "</tr></thead><tbody><tr><td>"+con[0]+"</td><td>"+con[1]+"</td><td>"+con[2]+"</td><td>"+con[3]+"</td><td>"+con[4]+"</td><td>"+con[5]+"</td><td>"+status+"</td></tr>"
+           + "</tbody></table>"
            + "</td><td rowspan=\"2\" align=\"right\"><h5><strong><a href=\"carta.jsp\">&lt;--</a>¿QUE ES UNA CARTA DE CREDITO?</strong></h5>"
            + "<h5><strong><a href=\"c_credito.jsp\">&lt;--</a>CARTA DE CREDITO DE IMPORTACIÓN</strong><br></h5><h5><strong><a href=\"c_domestica.jsp\">&lt;--</a>CARTAS DE CREDITO DOMESTICAS</strong></h5>"
            + "<h5><strong><a href=\"c_exportacion.jsp\">&lt;--</a>CARTAS DE CREDITO DE EXPORTACIÓN</strong></h5>"
@@ -67,7 +121,30 @@ public class Consulta extends HttpServlet {
                    
                }else if(mes_1==null && mes_3!=null && mes_12==null){
                    
-                   String consult = consulta3Meses("1");
+                   String consult = consulta3Meses(dep);
+                   StringTokenizer ed = new StringTokenizer(consult,",");
+                   String con[][] = new String[3][7];
+                   String status[] = new String[3];
+                   int j=0;
+                   while (ed.hasMoreTokens()){
+                       
+                       for (int i=0;i<7;i++){
+                           con[j][i] = ed.nextToken();
+                       }
+                       j++;
+                   }
+                   
+                   for(int i=0;i<3;i++){
+                   if(con[i][6].equals("1")){
+                       status[i] = "Banco en Operación";
+                   }else{
+                       status[i] = "Banco en Bancarrota";
+                   }
+                   }
+                   
+                   
+                   
+                   
                    
                    out.println("<!DOCTYPE html><html xmlns=\"http://www.w3.org/1999/xhtml/\"><head><meta http-equiv=\"Content-Type content=\"text html; charset=utf-8\"/>"
            + "<title>Banco Multinacional</title><style type=\"text/css\">body,td,th {color: #90F;}</style><style type=\"text/css\">"
@@ -78,7 +155,13 @@ public class Consulta extends HttpServlet {
            + "<td colspan=\"3\"><p>&nbsp;</p><p><a href=\"compromisocial.jsp\"><img src=\"/Cliente/images/compromiso_social.png\" width=\"346\" height=\"149\" align=\"right\" /></a></p></td></tr><tr>"
            + "<td height=\"84\" colspan=\"6\"><h6><img src=\"/Cliente/images/eco_fin.png\" width=\"1316\" height=\"126\" /></h6></td></tr><tr><td colspan=\"2\"><h5>&nbsp;</h5><h5>COBRANZA DOCUMENTARIA<a href=\"cobranza.jsp\">--&gt; </a></h5><h5>GIROS DIRECTOS FINANCIADOS<a href=\"giros.jsp\">--&gt;</a> </h5>"
            + "<h5>FINANCIAMIENTO A CORTO PLAZO<a href=\"f_cp.jsp\">--&gt;</a></h5>        <h5>SUCURSALES EXTRANJERAS<a href=\"cons_banc.jsp\">--&gt;</a></h5></td><td>"
-           + "<center><h3>Consulta de 3 meses </h3></center>"
+           + "<center><h2>Departamento: "+name_depto+"</h2></center> "
+            + "<center><h2>Consulta de 3 meses </h2></center>"
+           + "<table border=\"1\" width =\"600\"><thead><tr><th>Ingresos</th><th>Egresos</th><th>Liquidez</th><th>Solvencia</th><th>Año</th><th>Mes</th><th>Status</th>"
+           + "</tr></thead><tbody><tr><td>"+con[0][0]+"</td><td>"+con[0][1]+"</td><td>"+con[0][2]+"</td><td>"+con[0][3]+"</td><td>"+con[0][4]+"</td><td>"+con[0][5]+"</td><td>"+status[0]+"</td></tr>"
+           + "<tr><td>"+con[1][0]+"</td><td>"+con[1][1]+"</td><td>"+con[1][2]+"</td><td>"+con[1][3]+"</td><td>"+con[1][4]+"</td><td>"+con[1][5]+"</td><td>"+status[1]+"</td></tr>"
+           + "<tr><td>"+con[2][0]+"</td><td>"+con[2][1]+"</td><td>"+con[2][2]+"</td><td>"+con[2][3]+"</td><td>"+con[1][4]+"</td><td>"+con[2][5]+"</td><td>"+status[2]+"</td></tr>"
+           + "</tbody></table>"  
            + "</td><td rowspan=\"2\" align=\"right\"><h5><strong><a href=\"carta.jsp\">&lt;--</a>¿QUE ES UNA CARTA DE CREDITO?</strong></h5>"
            + "<h5><strong><a href=\"c_credito.jsp\">&lt;--</a>CARTA DE CREDITO DE IMPORTACIÓN</strong><br></h5><h5><strong><a href=\"c_domestica.jsp\">&lt;--</a>CARTAS DE CREDITO DOMESTICAS</strong></h5>"
            + "<h5><strong><a href=\"c_exportacion.jsp\">&lt;--</a>CARTAS DE CREDITO DE EXPORTACIÓN</strong></h5>"
@@ -89,7 +172,26 @@ public class Consulta extends HttpServlet {
            + "<h5>México, D. F. Teléfono 55238744 ext. 16948 fax 77003</h5></td></tr></tbody></table></body</html>");
                    
                }else{
-                   String consult = consulta1Ano("1");
+                   String consult = consulta1Ano(dep);
+                   StringTokenizer ed = new StringTokenizer(consult,",");
+                   String con[][] = new String[12][7];
+                   String status[] = new String[12];
+                   int j=0;
+                   while (ed.hasMoreTokens()){
+                       
+                       for (int i=0;i<7;i++){
+                           con[j][i] = ed.nextToken();
+                       }
+                       j++;
+                   }
+                   
+                   for(int i=0;i<12;i++){
+                   if(con[i][6].equals("1")){
+                       status[i] = "Banco en Operación";
+                   }else{
+                       status[i] = "Banco en Bancarrota";
+                   }
+                   }
                    
                     out.println("<!DOCTYPE html><html xmlns=\"http://www.w3.org/1999/xhtml/\"><head><meta http-equiv=\"Content-Type content=\"text html; charset=utf-8\"/>"
            + "<title>Banco Multinacional</title><style type=\"text/css\">body,td,th {color: #90F;}</style><style type=\"text/css\">"
@@ -100,7 +202,22 @@ public class Consulta extends HttpServlet {
            + "<td colspan=\"3\"><p>&nbsp;</p><p><a href=\"compromisocial.jsp\"><img src=\"/Cliente/images/compromiso_social.png\" width=\"346\" height=\"149\" align=\"right\" /></a></p></td></tr><tr>"
            + "<td height=\"84\" colspan=\"6\"><h6><img src=\"/Cliente/images/eco_fin.png\" width=\"1316\" height=\"126\" /></h6></td></tr><tr><td colspan=\"2\"><h5>&nbsp;</h5><h5>COBRANZA DOCUMENTARIA<a href=\"cobranza.jsp\">--&gt; </a></h5><h5>GIROS DIRECTOS FINANCIADOS<a href=\"giros.jsp\">--&gt;</a> </h5>"
            + "<h5>FINANCIAMIENTO A CORTO PLAZO<a href=\"f_cp.jsp\">--&gt;</a></h5>        <h5>SUCURSALES EXTRANJERAS<a href=\"cons_banc.jsp\">--&gt;</a></h5></td><td>"
-           + "<center><h3>Consulta de 12 meses </h3></center>"
+           + "<center><h2>Departamento: "+name_depto+"</h2></center> "
+           + "<center><h2>Consulta de 12 meses </h2></center>"
+           + "<table border=\"1\" width =\"600\"><thead><tr><th>Ingresos</th><th>Egresos</th><th>Liquidez</th><th>Solvencia</th><th>Año</th><th>Mes</th><th>Status</th>"
+           + "</tr></thead><tbody><tr><td>"+con[0][0]+"</td><td>"+con[0][1]+"</td><td>"+con[0][2]+"</td><td>"+con[0][3]+"</td><td>"+con[0][4]+"</td><td>"+con[0][5]+"</td><td>"+status[0]+"</td></tr>"
+           + "<tr><td>"+con[1][0]+"</td><td>"+con[1][1]+"</td><td>"+con[1][2]+"</td><td>"+con[1][3]+"</td><td>"+con[1][4]+"</td><td>"+con[1][5]+"</td><td>"+status[1]+"</td></tr>"
+           + "<tr><td>"+con[2][0]+"</td><td>"+con[2][1]+"</td><td>"+con[2][2]+"</td><td>"+con[2][3]+"</td><td>"+con[2][4]+"</td><td>"+con[2][5]+"</td><td>"+status[2]+"</td></tr>"
+           + "<tr><td>"+con[2][0]+"</td><td>"+con[2][1]+"</td><td>"+con[3][2]+"</td><td>"+con[3][3]+"</td><td>"+con[3][4]+"</td><td>"+con[3][5]+"</td><td>"+status[3]+"</td></tr>"
+           + "<tr><td>"+con[1][0]+"</td><td>"+con[1][1]+"</td><td>"+con[4][2]+"</td><td>"+con[4][3]+"</td><td>"+con[4][4]+"</td><td>"+con[4][5]+"</td><td>"+status[4]+"</td></tr>"
+           + "<tr><td>"+con[2][0]+"</td><td>"+con[2][1]+"</td><td>"+con[5][2]+"</td><td>"+con[5][3]+"</td><td>"+con[5][4]+"</td><td>"+con[5][5]+"</td><td>"+status[5]+"</td></tr>"
+           + "<tr><td>"+con[2][0]+"</td><td>"+con[2][1]+"</td><td>"+con[6][2]+"</td><td>"+con[6][3]+"</td><td>"+con[6][4]+"</td><td>"+con[6][5]+"</td><td>"+status[6]+"</td></tr>"
+           + "<tr><td>"+con[1][0]+"</td><td>"+con[1][1]+"</td><td>"+con[7][2]+"</td><td>"+con[7][3]+"</td><td>"+con[7][4]+"</td><td>"+con[7][5]+"</td><td>"+status[7]+"</td></tr>"
+           + "<tr><td>"+con[2][0]+"</td><td>"+con[2][1]+"</td><td>"+con[8][2]+"</td><td>"+con[8][3]+"</td><td>"+con[8][4]+"</td><td>"+con[8][5]+"</td><td>"+status[8]+"</td></tr>"
+           + "<tr><td>"+con[2][0]+"</td><td>"+con[2][1]+"</td><td>"+con[9][2]+"</td><td>"+con[9][3]+"</td><td>"+con[9][4]+"</td><td>"+con[9][5]+"</td><td>"+status[9]+"</td></tr>"
+           + "<tr><td>"+con[2][0]+"</td><td>"+con[2][1]+"</td><td>"+con[10][2]+"</td><td>"+con[10][3]+"</td><td>"+con[10][4]+"</td><td>"+con[10][5]+"</td><td>"+status[10]+"</td></tr>"
+           + "<tr><td>"+con[2][0]+"</td><td>"+con[2][1]+"</td><td>"+con[11][2]+"</td><td>"+con[11][3]+"</td><td>"+con[11][4]+"</td><td>"+con[11][5]+"</td><td>"+status[11]+"</td></tr>"          
+           + "</tbody></table>"  
            + "</td><td rowspan=\"2\" align=\"right\"><h5><strong><a href=\"carta.jsp\">&lt;--</a>¿QUE ES UNA CARTA DE CREDITO?</strong></h5>"
            + "<h5><strong><a href=\"c_credito.jsp\">&lt;--</a>CARTA DE CREDITO DE IMPORTACIÓN</strong><br></h5><h5><strong><a href=\"c_domestica.jsp\">&lt;--</a>CARTAS DE CREDITO DOMESTICAS</strong></h5>"
            + "<h5><strong><a href=\"c_exportacion.jsp\">&lt;--</a>CARTAS DE CREDITO DE EXPORTACIÓN</strong></h5>"
@@ -126,11 +243,13 @@ public class Consulta extends HttpServlet {
            + "<td width=\"318\" colspan=\"2\">&nbsp;</td></tr><tr><td colspan=\"3\"><h6><a href=\"/Cliente/index.jsp\"><img src=\"/Cliente/images/bm_morado.png\" alt=\"\" width=\"384\" height=\"211\" align=\"top\" /></a></h6></td>"
            + "<td colspan=\"3\"><p>&nbsp;</p><p><a href=\"compromisocial.jsp\"><img src=\"/Cliente/images/compromiso_social.png\" width=\"346\" height=\"149\" align=\"right\" /></a></p></td></tr><tr>"
            + "<td height=\"84\" colspan=\"6\"><h6><img src=\"/Cliente/images/eco_fin.png\" width=\"1316\" height=\"126\" /></h6></td></tr><tr><td colspan=\"2\"><h5>&nbsp;</h5><h5>COBRANZA DOCUMENTARIA<a href=\"cobranza.jsp\">--&gt; </a></h5><h5>GIROS DIRECTOS FINANCIADOS<a href=\"giros.jsp\">--&gt;</a> </h5>"
-           + "<h5>FINANCIAMIENTO A CORTO PLAZO<a href=\"f_cp.jsp\">--&gt;</a></h5>        <h5>SUCURSALES EXTRANJERAS<a href=\"cons_banc.jsp\">--&gt;</a></h5></td><td>"
-           + "<center><h3>Consulta </h3></center><form name=\"aut\" method=\"post\" action=\"#\"><table border=\"0\"><thead></thead>"
+           + "<h5>FINANCIAMIENTO A CORTO PLAZO<a href=\"f_cp.jsp\">--&gt;</a></h5>        <h5>SUCURSALES EXTRANJERAS<a href=\"cons_banc.jsp\">--&gt;</a></h5></td><td rowspan=\"3\" align=\"center\" valign=\"top\" width=\"600\">"
+           + "<center><h2>Departamento: "+name_depto+"</h2></center> "
+           + "<center><h2>Consulta </h2></center><form name=\"aut\" method=\"post\" action=\"#\"><table border=\"0\"><thead></thead>"
                             + "<tbody><tr><td><input name=\"1mes\" type=\"radio\" id=\"consulta\" value=\"1\" />1 Mes</td>"
                             + "</tr><tr><td><input name=\"3meses\" type=\"radio\" id=\"procesa\" value=\"3\" />3 Meses</td></tr> "
                             + " <tr><td><input name=\"12meses\" type=\"radio\" id=\"procesa\" value=\"12\" />1 Año</td></tr>"
+                            + "<input type='hidden' name='depto' value='"+depto+"'>"
                             + "<td><input type=\"submit\" value=\"Acceder\" name=\"accederButton\"></td></tr></tbody></table></form>"
            + "</td><td rowspan=\"2\" align=\"right\"><h5><strong><a href=\"carta.jsp\">&lt;--</a>¿QUE ES UNA CARTA DE CREDITO?</strong></h5>"
            + "<h5><strong><a href=\"c_credito.jsp\">&lt;--</a>CARTA DE CREDITO DE IMPORTACIÓN</strong><br></h5><h5><strong><a href=\"c_domestica.jsp\">&lt;--</a>CARTAS DE CREDITO DOMESTICAS</strong></h5>"

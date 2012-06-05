@@ -3,13 +3,16 @@
  * and open the template in the editor.
  */
 
+import escom.tds.servidor.Prevencion_Service;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.StringTokenizer;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.ws.WebServiceRef;
 
 /**
  *
@@ -17,6 +20,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "Procesa", urlPatterns = {"/Procesa"})
 public class Procesa extends HttpServlet {
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/Servidor/prevencion.wsdl")
+    private Prevencion_Service service;
 
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -30,6 +35,43 @@ public class Procesa extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
+            String depto = request.getParameter("dep");
+            String consul = procesaInformacion(depto);
+            String consult = consulta1Mes(depto);
+                   StringTokenizer ed = new StringTokenizer(consult,",");
+                   String con[] = new String[7];
+                   String status = new String();                
+                   while (ed.hasMoreTokens()){
+                       
+                       for (int i=0;i<7;i++){
+                           con[i] = ed.nextToken();
+                       }
+                       
+                   }
+                   
+                   for(int i=0;i<3;i++){
+                   if(con[6].equals("1")){
+                       status = "Banco en Operación";
+                   }else{
+                       status = "Banco en Bancarrota";
+                   }
+                   }
+            
+                   String name_depto = null;
+                  switch(Integer.parseInt(depto)) 
+                     {
+                   case 1:name_depto = "Manejo de Fondos";
+                           break;
+                   case 2:name_depto = "Monetaria";
+                           break;
+                   case 3:name_depto = "Politica";
+                           break;
+                   case 4:name_depto = "Sistemas Finacieros";
+                           break; 
+                }
+                   
+                   
+                   
           out.println("<!DOCTYPE html><html xmlns=\"http://www.w3.org/1999/xhtml/\"><head><meta http-equiv=\"Content-Type content=\"text html; charset=utf-8\"/>"
            + "<title>Banco Multinacional</title><style type=\"text/css\">body,td,th {color: #90F;}</style><style type=\"text/css\">"
                    + "ul.ppt {position: relative;}.ppt li {list-style-type: none;position: absolute;top: 4px;left: 59px;height: 247px;}.ppt img {"
@@ -39,7 +81,14 @@ public class Procesa extends HttpServlet {
            + "<td colspan=\"3\"><p>&nbsp;</p><p><a href=\"compromisocial.jsp\"><img src=\"/Cliente/images/compromiso_social.png\" width=\"346\" height=\"149\" align=\"right\" /></a></p></td></tr><tr>"
            + "<td height=\"84\" colspan=\"6\"><h6><img src=\"/Cliente/images/eco_fin.png\" width=\"1316\" height=\"126\" /></h6></td></tr><tr><td colspan=\"2\"><h5>&nbsp;</h5><h5>COBRANZA DOCUMENTARIA<a href=\"cobranza.jsp\">--&gt; </a></h5><h5>GIROS DIRECTOS FINANCIADOS<a href=\"giros.jsp\">--&gt;</a> </h5>"
            + "<h5>FINANCIAMIENTO A CORTO PLAZO<a href=\"f_cp.jsp\">--&gt;</a></h5>        <h5>SUCURSALES EXTRANJERAS<a href=\"cons_banc.jsp\">--&gt;</a></h5></td><td>"
-           + "<h3>Procesa </h3>"
+           + "<center><h2>Departamento: "+name_depto+"</h2></center> "
+           + "<center><h2>Procesa </h2></center>"
+           + "<table border=\"1\" width =\"600\"><thead><tr><th>Ingresos</th><th>Egresos</th><th>Liquidez</th><th>Solvencia</th><th>Año</th><th>Mes</th>"
+           + "</tr></thead><tbody><tr><td>"+con[0]+"</td><td>"+con[1]+"</td><td>"+con[2]+"</td><td>"+con[3]+"</td><td>"+con[4]+"</td><td>"+con[5]+"</td></tr>"
+           + "</tbody></table>"
+           +"<h3>La predicción realizada fueron evaluadoas con 12 bancos con distintos estados de cuenta, de los cuales 6 estan vigentes y 6 ya no exiten.</h3>"
+           + "&nbsp;"
+           + "<h3>Se ocupo el algoritmo knn con k=3 dando como resultado en el presnete mes:    <i>"+consul+"</i></h3>"
            + "</td><td rowspan=\"2\" align=\"right\"><h5><strong><a href=\"carta.jsp\">&lt;--</a>¿QUE ES UNA CARTA DE CREDITO?</strong></h5>"
            + "<h5><strong><a href=\"c_credito.jsp\">&lt;--</a>CARTA DE CREDITO DE IMPORTACIÓN</strong><br></h5><h5><strong><a href=\"c_domestica.jsp\">&lt;--</a>CARTAS DE CREDITO DOMESTICAS</strong></h5>"
            + "<h5><strong><a href=\"c_exportacion.jsp\">&lt;--</a>CARTAS DE CREDITO DE EXPORTACIÓN</strong></h5>"
@@ -88,4 +137,14 @@ public class Procesa extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private String procesaInformacion(java.lang.String dep) {
+        escom.tds.servidor.Prevencion port = service.getPrevencionPort();
+        return port.procesaInformacion(dep);
+    }
+
+    private String consulta1Mes(java.lang.String dep) {
+        escom.tds.servidor.Prevencion port = service.getPrevencionPort();
+        return port.consulta1Mes(dep);
+    }
 }

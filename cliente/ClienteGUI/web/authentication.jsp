@@ -16,6 +16,9 @@
         <title>Autenticación</title>
     </head>
     <body>
+        
+        
+        
     <center>
         <h1>Sistema de Prevención de Crisis Financiera</h1>
         <table border="0">
