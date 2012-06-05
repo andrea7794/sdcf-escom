@@ -62,20 +62,26 @@
                 <td rowspan="3" align="center" valign="top"><p>      
                     <h3>&nbsp;</h3>
                     <h2><strong> </strong><img src="../images/politica.png" width="385" height="210" /></h2></td>
-                <td rowspan="3" align="center" valign="top"><h3>INICIAR SESION </h3>
-                    <h3>&nbsp;</h3>
-                    <p>Usuario:</p>
-                    <form id="form1" name="form1" method="post" action="">
-                        <label for="user"></label>
-                        <input name="user" type="text" id="user" size="30" />
-                    </form>
-                    <p>Contraseña:</p>
-                    <form id="form2" name="form2" method="post" action="">
-                        <label for="password"></label>
-                        <input name="password" type="password" id="password" size="30" />
-                    </form>
+                <td rowspan="3" align="center" valign="top">
+
+                    <form id="form1" name="form1" method="post" action="../Verifica">
+                            <h3>INICIAR SESION </h3>
+                            <h3>&nbsp;</h3>
+                           
+                            <p>Usuario:</p>
+                            <label for="user"></label>
+                            <input name="usr" type="text" id="usr" size="30" />
+
+                            <p>Contraseña:</p>
+
+                            <label for="password"></label>
+                            <input name="pass" type="password" id="pass" size="30" />
+                            <input type='hidden' name='parametro1' value='3'>  
+                            <p>&nbsp;</p>
+                            <input type="submit" value="ingresar" name="ingresar" />
+                        </form>
+                    </td>
                     <p>&nbsp;</p>
-                    <p><a href="opciones_politica.jsp">I</a>I<a href="opciones_politica.jsp">N</a>N<a href="opciones_politica.jsp">G</a>G<a href="opciones_politica.jsp">R</a>R<a href="opciones_politica.jsp">E</a>E<a href="opciones_politica.jsp">S</a>S<a href="opciones_politica.jsp">A</a>A<a href="opciones_politica.jsp">R</a>R</p></td>
                 <td rowspan="2" align="right"><h5><strong><a href="carta.jsp">&lt;--</a>¿QUE ES UNA CARTA DE CREDITO?</strong></h5>
                     <h5><strong><a href="c_credito.jsp">&lt;--</a>CARTA DE CREDITO DE IMPORTACIÓN</strong><br>
                     </h5>      

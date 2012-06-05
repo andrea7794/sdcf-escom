@@ -69,7 +69,7 @@
                         <form id="form1" name="form1" method="post" action="../Verifica">
                             <h3>INICIAR SESION </h3>
                             <h3>&nbsp;</h3>
-                            <input type="checkbox" name="dep" value="1" checked="checked" disabled="disabled" /> Manejo de Fondos
+                           
                             <p>Usuario:</p>
                             <label for="user"></label>
                             <input name="usr" type="text" id="usr" size="30" />
@@ -78,7 +78,7 @@
 
                             <label for="password"></label>
                             <input name="pass" type="password" id="pass" size="30" />
-
+                            <input type='hidden' name='parametro1' value='1'>  
                             <p>&nbsp;</p>
                             <input type="submit" value="ingresar" name="ingresar" />
                         </form>

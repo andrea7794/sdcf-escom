@@ -7,9 +7,12 @@ import com.auth.Auth;
 import escom.tds.servidor.Prevencion_Service;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.channels.SeekableByteChannel;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -51,8 +54,13 @@ public class Verifica extends HttpServlet {
             String result;
             String a = request.getParameter("usr");
             String b = request.getParameter("pass");
-            String c = request.getParameter("dep");
+            String c = request.getParameter("parametro1");
+            ServletContext sc = null ; 
+            RequestDispatcher rd = null;
+            HttpServletResponse  se = null;
 
+            
+            
 
             if (a != null && b != null) {
                 result = verificaUsr(a, b, c);
@@ -113,45 +121,15 @@ public class Verifica extends HttpServlet {
             f = request.getParameter("procesa");
 
             if (e.equals("consulta")) {
-                out.println("<html>");
-                out.println("<head>");
-                out.println("<link rel=" + "\"stylesheet\"" + " type=\"text/css\"" + " href=\"style.css\">");
-                out.println("<title>Servlet ClienteLlamaWs</title>");
-                out.println("</head>");
-                out.println("<body>");
-                out.println("<h1>Consulta a la base de Datos:</h1>");
-
-                String submit = request.getParameter("Acceder");
-                //out.println(submit);   
-              
-               
-                out.println("</body>");
-                out.println("</html>");
+                
+                 response.sendRedirect("Consulta");
+                 
+          
+           
             } else {
-                out.println("<html>");
-                out.println("<head>");
-                out.println("<link rel=" + "\"stylesheet\"" + " type=\"text/css\"" + " href=\"style.css\">");
-                out.println("<title>Servlet ClienteLlamaWs</title>");
-                out.println("</head>");
-                out.println("<body>");
-                out.println("<h1>Resultado del algoritmo:</h1>");
-
-                String submit = request.getParameter("Acceder");
-                //out.println(submit);   
-               // String cons = consultaBase(submit);
-               // String proc = procesaInformacion(cons);
-                //out.println("Result: " + proc);
-                out.println("</body>");
-                out.println("</html>");
+                response.sendRedirect("Procesa");
             }
-            /*
-             * out.println("<html>"); out.println("<head>"); out.println("<link
-             * rel=" + "\"stylesheet\"" + " type=\"text/css\"" + "
-             * href=\"style.css\">"); out.println("<title>Servlet
-             * ClienteLlamaWs</title>"); out.println("</head>");
-             * out.println("<body>"); out.println("<h1>Resultado del
-             * algoritmo:"+pass+"</h1>");
-             */
+           
 
 
 

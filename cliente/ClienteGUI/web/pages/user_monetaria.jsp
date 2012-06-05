@@ -36,6 +36,13 @@
         </style>
     </head>
 
+    
+    
+    
+    
+    
+    
+    
     <body text="#FFFFFF" link="#FFFFFF" vlink="#FFFFFF" alink="#FFFFFF">
 
         <table width="1321" height="1090" border="0" align="center">
@@ -63,20 +70,27 @@
                     <td rowspan="3" align="center" valign="top"><p>      
                             <h3>&nbsp;</h3>
                             <h2><strong> </strong><img src="../images/monetaria.png" width="363" height="175" /></h2></td>
-                    <td rowspan="3" align="center" valign="top"><h3>INICIAR SESION </h3>
+                    <td rowspan="3" align="center" valign="top">
                         <h3>&nbsp;</h3>
-                        <p>Usuario:</p>
-                        <form id="form1" name="form1" method="post" action="">
+                       
+                         <form id="form1" name="form1" method="post" action="../Verifica">
+                            <h3>INICIAR SESION </h3>
+                            <h3>&nbsp;</h3>
+                           
+                            <p>Usuario:</p>
                             <label for="user"></label>
-                            <input name="user" type="text" id="user" size="30" />
-                        </form>
-                        <p>Contraseña:</p>
-                        <form id="form2" name="form2" method="post" action="">
+                            <input name="usr" type="text" id="usr" size="30" />
+
+                            <p>Contraseña:</p>
+
                             <label for="password"></label>
-                            <input name="password" type="password" id="password" size="30" />
+                            <input name="pass" type="password" id="pass" size="30" />
+                            <input type='hidden' name='parametro1' value='2'>  
+                            <p>&nbsp;</p>
+                            <input type="submit" value="ingresar" name="ingresar" />
                         </form>
                         <p>&nbsp;</p>
-                        <p><a href="opciones_m.jsp">I</a>I<a href="opciones_m.jsp">N</a>N<a href="opciones_m.jsp">G</a>G<a href="opciones_m.jsp">R</a>R<a href="opciones_m.jsp">E</a>E<a href="opciones_m.jsp">S</a>S<a href="opciones_m.jsp">A</a>A<a href="opciones.jsp">R</a>R</p></td>
+                        </td>
                     <td rowspan="2" align="right"><h5><strong><a href="carta.jsp">&lt;--</a>¿QUE ES UNA CARTA DE CREDITO?</strong></h5>
                         <h5><strong><a href="c_credito.jsp">&lt;--</a>CARTA DE CREDITO DE IMPORTACIÓN</strong><br>
                         </h5>      
