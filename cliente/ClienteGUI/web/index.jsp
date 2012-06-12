@@ -83,7 +83,7 @@
                                 }
 
                                 $(function() {
-                                    setInterval( "animate()", 3000 );
+                                    setInterval( "animate()", 2000 );
                                 } );
                             </script>
 
@@ -91,12 +91,16 @@
                     <td rowspan="2" align="right">
                         <h5><strong><a href="pages/carta.jsp">&lt;--</a>¿QUE ES UNA CARTA DE CREDITO?</strong></h5>
                         <h5><strong><a href="pages/c_credito.jsp">&lt;--</a>CARTA DE CREDITO DE IMPORTACIÓN</strong>
-                        <h5><strong><a href="pages/c_domestica.jsp">&lt;--</a>CARTAS DE CREDITO DOMESTICAS</strong></h5>
-                        <h5><strong><a href="pages/c_exportacion.jsp">&lt;--</a>CARTAS DE CREDITO DE EXPORTACIÓN</strong></h5>
-                        <h5><strong><a href="pages/c_standby.jsp">&lt;--</a>CARTAS DE CREDITO EN STANDBY</strong></h5></td>
+                            <h5><strong><a href="pages/c_domestica.jsp">&lt;--</a>CARTAS DE CREDITO DOMESTICAS</strong></h5>
+                            <h5><strong><a href="pages/c_exportacion.jsp">&lt;--</a>CARTAS DE CREDITO DE EXPORTACIÓN</strong></h5>
+                            <h5><strong><a href="pages/c_standby.jsp">&lt;--</a>CARTAS DE CREDITO EN STANDBY</strong></h5></td>
                 </tr>
                 <tr>
-                    <td colspan="2" rowspan="2" align="left"><h6>&nbsp;</h6>        <h6>´</h6>        <h6>&nbsp;</h6>        <h6>&nbsp;</h6>        <h6>&nbsp;</h6>          <a href="pages/qys.jsp"><img src="images/qys.png" width="265" height="143" /></a></td>
+                    <td colspan="2" rowspan="2" align="left"><a href="pages/qys.jsp"><img src="images/qys.png" width="265" height="143" /></a></td>
+                </tr>
+                <tr>
+                    <td align="center"><h6>&nbsp;</h6>
+                        <h6><a href="admin/user_admin.jsp"><img src="images/admin.png" width="194" height="131" /></a></h6>
                 </tr>
                 <tr>
                     <td align="center"><p>&nbsp;</p>

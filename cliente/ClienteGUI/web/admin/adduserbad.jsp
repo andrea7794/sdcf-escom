@@ -1,12 +1,12 @@
 <%-- 
-    Document   : opciones_sistemasfinancieros
-    Created on : May 28, 2012, 2:31:25 PM
+    Document   : adduserbad
+    Created on : Jun 7, 2012, 4:58:31 PM
     Author     : ROLANDO
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Banco Multinacional</title>
@@ -36,6 +36,8 @@
         </style>
     </head>
 
+
+
     <body text="#FFFFFF" link="#FFFFFF" vlink="#FFFFFF" alink="#FFFFFF">
 
         <table width="1321" height="1090" border="0" align="center">
@@ -53,35 +55,20 @@
                         <p><a href="compromisocial.jsp"><img src="../images/compromiso_social.png" width="346" height="149" align="right" /></a></p></td>
                 </tr>
                 <tr>
-                    <td height="84" colspan="6"><h6><img src="../images/eco_fin.png" width="1337" height="126" /></h6></td>
+                    <td height="84" colspan="6"><h6><img src="../images/eco_fin.png" width="1316" height="126" /></h6></td>
                 </tr>
                 <tr>
                     <td colspan="2"><h5>&nbsp;</h5>
                         <h5>COBRANZA DOCUMENTARIA<a href="cobranza.jsp">--&gt; </a></h5>
                         <h5>GIROS DIRECTOS FINANCIADOS<a href="giros.jsp">--&gt;</a> </h5>
-                        <h5>FINANCIAMIENTO A CORTO PLAZO<a href="f_cp.jsp">--&gt;</a></h5>        <h5>SUCURSALES EXTRANJERAS<a href="cons_banc.jsp">--&gt;</a></h5></td>
+                        <h5>FINANCIAMIENTO A CORTO PLAZO<a href="f_cp.jsp">--&gt;</a></h5>        
+                        <h5>SUCURSALES EXTRANJERAS<a href="cons_banc.jsp">--&gt;</a></h5></td>
                     <td rowspan="3" align="center" valign="top"><p>      
-                            <h3>&nbsp;</h3>
-                            <h2><strong> </strong><img src="../images/s_financieros.png" width="442" height="230" /></h2></td>
-                    <td rowspan="3" align="center" valign="top"><h3>&nbsp;</h3>
-                        <h3>BIENVENIDO</h3>
-                        <p>&nbsp;</p>
-                        <form id="form1" name="form1" method="post" action="">
-                            <h4>
-                                <input name="radio" type="radio" id="CONSULTAR" value="CONSULTAR" />
-                                <strong>            CONSULTAR INFORMACIÓN
-                                </strong></h4>
-                        </form>
-                        <h4>&nbsp;</h4>
-                        <form id="form2" name="form2" method="post" action="">
-                            <h4>
-                                <strong>
-                                    <input type="radio" name="radio" id="PROCESAR" value="PROCESAR" />
-                                    PROCESAR INFORMACIÓN
-                                </strong> </h4>
-                        </form>
-                        <p>&nbsp;</p>
-                        <p><strong>I<a href="ClienteLlamaWs">I</a>R<a href="ClienteLlamaWs">R</a></strong></p></td>
+                        <h3>&nbsp;</h3>
+                        <h2><strong> PROBLEMA AL INTENTAR AGREGAR AL USUARIO, CONSULTE EL LOG DEL SERVIDOR </h2></td>
+
+                   
+
                     <td rowspan="2" align="right"><h5><strong><a href="carta.jsp">&lt;--</a>¿QUE ES UNA CARTA DE CREDITO?</strong></h5>
                         <h5><strong><a href="c_credito.jsp">&lt;--</a>CARTA DE CREDITO DE IMPORTACIÓN</strong><br>
                         </h5>      
@@ -98,7 +85,7 @@
                         <p><strong>SÍGUENOS EN:  </strong>
                         </p>
                         <p><strong><a href="www.facebook.com"><img src="../images/icon-facebook.jpg" width="42" height="40" /></a></strong></p>
-                        <p><strong>Banco.Multinacional@facebook.c<a href="www.facebook.com">om</a></strong></p>
+                        <p><strong>Banco.Multinacional@facebook.<a href="www.facebook.com">com</a></strong></p>
                         <p><strong><a href="www.twitter.com"><img src="../images/icon-twitter.jpg" width="45" height="44" alt="TWITTER" /></a> </strong></p>
                         <p><strong>@Banco_Multinacional</strong></p>        </td>
                 </tr>
@@ -111,4 +98,3 @@
         </table>
     </body>
 </html>
-

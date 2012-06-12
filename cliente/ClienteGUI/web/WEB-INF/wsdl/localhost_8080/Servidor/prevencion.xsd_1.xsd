@@ -1,4 +1,12 @@
-<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is Metro/2.1.1-b09 (branches/2.1-6834; 2011-07-16T17:14:48+0000) JAXWS-RI/2.2.5-promoted-b04 JAXWS/2.2. --><xs:schema xmlns:tns="http://servidor.tds.escom/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://servidor.tds.escom/">
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is Metro/2.2-b13 (branches/2.2-6964; 2012-01-09T18:04:18+0000) JAXWS-RI/2.2.6-promoted-b20 JAXWS/2.2 svn-revision#unknown. --><xs:schema xmlns:tns="http://servidor.tds.escom/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://servidor.tds.escom/">
+
+<xs:element name="agregaUsuario" type="tns:agregaUsuario"/>
+
+<xs:element name="agregaUsuarioResponse" type="tns:agregaUsuarioResponse"/>
+
+<xs:element name="borraUsuario" type="tns:borraUsuario"/>
+
+<xs:element name="borraUsuarioResponse" type="tns:borraUsuarioResponse"/>
 
 <xs:element name="consulta1Ano" type="tns:consulta1Ano"/>
 
@@ -12,6 +20,10 @@
 
 <xs:element name="consulta3MesesResponse" type="tns:consulta3MesesResponse"/>
 
+<xs:element name="consultaBanco" type="tns:consultaBanco"/>
+
+<xs:element name="consultaBancoResponse" type="tns:consultaBancoResponse"/>
+
 <xs:element name="consultaBase" type="tns:consultaBase"/>
 
 <xs:element name="consultaBaseResponse" type="tns:consultaBaseResponse"/>
@@ -24,9 +36,54 @@
 
 <xs:element name="procesaInformacionResponse" type="tns:procesaInformacionResponse"/>
 
+<xs:element name="verificaAdmin" type="tns:verificaAdmin"/>
+
+<xs:element name="verificaAdminResponse" type="tns:verificaAdminResponse"/>
+
 <xs:element name="verificaUsr" type="tns:verificaUsr"/>
 
 <xs:element name="verificaUsrResponse" type="tns:verificaUsrResponse"/>
+
+<xs:complexType name="consultaBanco">
+<xs:sequence>
+<xs:element name="dep" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="consultaBancoResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="verificaAdmin">
+<xs:sequence>
+<xs:element name="usr" type="xs:string" minOccurs="0"/>
+<xs:element name="pass" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="verificaAdminResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="agregaUsuario">
+<xs:sequence>
+<xs:element name="nombreCom" type="xs:string" minOccurs="0"/>
+<xs:element name="usr" type="xs:string" minOccurs="0"/>
+<xs:element name="pass" type="xs:string" minOccurs="0"/>
+<xs:element name="admin" type="xs:string" minOccurs="0"/>
+<xs:element name="dep" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="agregaUsuarioResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
 
 <xs:complexType name="consulta1Mes">
 <xs:sequence>
@@ -85,6 +142,18 @@
 </xs:complexType>
 
 <xs:complexType name="verificaUsrResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="borraUsuario">
+<xs:sequence>
+<xs:element name="usr" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="borraUsuarioResponse">
 <xs:sequence>
 <xs:element name="return" type="xs:string" minOccurs="0"/>
 </xs:sequence>
