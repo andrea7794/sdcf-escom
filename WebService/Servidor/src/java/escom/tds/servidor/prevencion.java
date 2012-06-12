@@ -54,9 +54,6 @@ public class prevencion {
 
     }
 
-    
-    
-    
     /**
      * Web service operation
      */
@@ -67,14 +64,13 @@ public class prevencion {
 
         String queriedString = consultaProcesa(dep);
         String queriedBank = consultaBanco(dep);
-        String valor = "1329504,3766187	,0.566197,0.0142387";
+        //String valor = "1329504,3766187	,0.566197,0.0142387";
         knn ini = new knn(queriedString, queriedBank, 3);
         String a = ini.iniciar();
 
         return a;
     }
 
-    
     @WebMethod(operationName = "consultaBanco")
     public String consultaBanco(@WebParam(name = "dep") final String dep) {
         try {
@@ -84,7 +80,7 @@ public class prevencion {
             StringBuilder s1 = new StringBuilder();
             //mes MAyo
             rs = dao.queryDB("SELECT ingresos,egresos, liquidez, solvencia FROM "
-                    + "estado_resultados AS E WHERE E.id_dep='"+dep+"'" 
+                    + "estado_resultados AS E WHERE E.id_dep='" + dep + "'"
                     + "AND E.id_banco = '1' AND E.mes = '5' ORDER BY E.id_edo;");
 
             while (rs.next()) {
@@ -97,7 +93,7 @@ public class prevencion {
                 s1.append(rs.getString("liquidez")).append(",");
 
                 s1.append(rs.getString("solvencia"));
-              
+
 
             }
             rs.close();
@@ -110,9 +106,7 @@ public class prevencion {
         }
         return null;
     }
-    
-    
-    
+
     /**
      * Web service operation
      */
@@ -169,7 +163,7 @@ public class prevencion {
             String a;
             StringBuilder s1 = new StringBuilder();
 
-            rs = dao.queryDB("SELECT * FROM estado_resultados WHERE id_banco='1' AND id_dep='"+dep+"' "
+            rs = dao.queryDB("SELECT * FROM estado_resultados WHERE id_banco='1' AND id_dep='" + dep + "' "
                     + "ORDER BY id_edo DESC LIMIT 1;");
 
             while (rs.next()) {
@@ -210,12 +204,12 @@ public class prevencion {
             //TODO write your implementation code here:
 
             String a;
-            int i=0;
+            int i = 0;
             StringBuilder s1 = new StringBuilder();
 
 
 
-            rs = dao.queryDB("SELECT * FROM estado_resultados WHERE id_banco='1' AND id_dep='"+dep+"' "
+            rs = dao.queryDB("SELECT * FROM estado_resultados WHERE id_banco='1' AND id_dep='" + dep + "' "
                     + "ORDER BY id_edo DESC LIMIT 3;");
 
             while (rs.next()) {
@@ -233,11 +227,11 @@ public class prevencion {
                 s1.append(rs.getString("mes")).append(",");
 
                 s1.append(rs.getString("flag")).append(",");
-         
 
 
-               }
-            
+
+            }
+
             rs.close();
             a = s1.toString();
             a = a.substring(0, (a.length() - 1));
@@ -260,9 +254,9 @@ public class prevencion {
 
             String a;
             StringBuilder s1 = new StringBuilder();
-            
-                
-            rs = dao.queryDB("SELECT * FROM estado_resultados WHERE id_banco='1' AND id_dep='"+dep+"' "
+
+
+            rs = dao.queryDB("SELECT * FROM estado_resultados WHERE id_banco='1' AND id_dep='" + dep + "' "
                     + " ORDER BY id_edo DESC LIMIT 12;");
 
             while (rs.next()) {
@@ -281,11 +275,11 @@ public class prevencion {
 
                 s1.append(rs.getString("flag")).append(",");
 
-               
+
 
 
             }
-            
+
             rs.close();
             a = s1.toString();
             a = a.substring(0, (a.length() - 1));
@@ -327,5 +321,111 @@ public class prevencion {
             Logger.getLogger(prevencion.class.getName()).log(Level.SEVERE, null, ex);
         }
         return "0";
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "verificaAdmin")
+    public String verificaAdmin(@WebParam(name = "usr") final String usr, @WebParam(name = "pass") final String pass) {
+        //TODO write your implementation code here:
+        String id;
+        ResultSet rs2;
+        try {
+            //TODO write your implementation code here:
+            rs = dao.queryDB("SELECT id_usuario FROM banco.usuarios "
+                    + "WHERE nombre_user = '" + usr + "' AND contrasena = '" + pass + "' AND admin ='1'");
+
+            if (rs.next()) {
+                return "1";
+            } else {
+                return "0";
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(prevencion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "0";
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "agregaUsuario")
+    public String agregaUsuario(@WebParam(name = "nombreCom") String nombreCom, @WebParam(name = "usr") String usr, @WebParam(name = "pass") String pass, @WebParam(name = "admin") String admin, @WebParam(name = "dep") String dep) {
+        try {
+            //TODO write your implementation code here:
+
+            String id;
+            String sql = "INSERT INTO `usuarios` (`nombre_com`,`nombre_user`,`contrasena`,`admin`)"
+                    + " VALUES('" + nombreCom + "','" + usr + "','" + pass + "'," + admin + ")";
+
+            if (nombreCom.equalsIgnoreCase(" ") && usr.equalsIgnoreCase(" ") && pass.equalsIgnoreCase(" ") && admin.equalsIgnoreCase(" ") && dep.equalsIgnoreCase(" ")) {
+                return "No se pueden insertar valores nulos en la base de datos, verifique la entrada";
+            } else {
+
+                if (dao.insertDB(sql) != 0) {
+                    rs = dao.queryDB("SELECT id_usuario FROM banco.usuarios "
+                            + "WHERE nombre_user = '" + usr + "' AND contrasena = '" + pass + "'");
+
+                    if (rs.next()) {
+                        id = rs.getString("id_usuario");
+
+                        String sql2 = "INSERT INTO `usuario_depto` VALUES('" + id + "','" + dep + "')";
+
+                        if (dao.insertDB(sql2) != 0) {
+                            return "1";
+                        } else {
+                            return "Problema al insertar en la base, consulte log del servidor";
+                        }
+                    } else {
+                        return "Problema al insertar en la base, consulte log del servidor";
+                    }
+
+                } else {
+                    return "Problema al insertar en la base, consulte log del servidor";
+                }
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(prevencion.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(prevencion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return "Problema al insertar en la base, consulte log del servidor";
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "borraUsuario")
+    public String borraUsuario(@WebParam(name = "usr") final String usr) {
+        try {
+            //TODO write your implementation code here:
+            String id;
+            rs = dao.queryDB("SELECT id_usuario FROM banco.usuarios "
+                    + "WHERE nombre_user = '" + usr + "'");
+
+            if (rs.next()) {
+
+                id = rs.getString("id_usuario");
+                String sql2 = "DELETE FROM `banco`.`usuarios` WHERE `id_usuario`='" + id + "'";
+                String sql3 = "DELETE FROM `banco`.`usuario_depto` WHERE `id_user`='" + id + "'";
+
+                if ((dao.deleteDB(sql2) != 0) && (dao.deleteDB(sql3) != 0)) {
+                    return "1";
+                } else {
+                    return "Problema al insertar en la base, consulte log del servidor";
+                }
+            } else {
+                return "Problema al insertar en la base, consulte log del servidor";
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(prevencion.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(prevencion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "Problema al borrar de la base, consulte log del servidor";
     }
 }
