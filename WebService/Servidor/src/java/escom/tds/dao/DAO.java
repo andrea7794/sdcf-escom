@@ -16,7 +16,7 @@ public class DAO {
 
     final String driver = "com.mysql.jdbc.Driver";
     final String login = "root";
-    final String password = "admin";
+    final String password = "060590";
     final String bd = "banco";
     final String url = "jdbc:mysql://localhost:3306/" + bd;
     public Statement stm = null;
