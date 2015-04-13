@@ -1,0 +1,1 @@
+Sistema detector de crisis financiera
